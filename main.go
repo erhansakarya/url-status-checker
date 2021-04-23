@@ -40,8 +40,10 @@ func main() {
 	}
 
 	results := make([]urlStatus, len(os.Args)-1)
-	for i, _ := range results {
-		results[i] = <-ch
-		fmt.Printf("[%d] %s %s\n", results[i].status, results[i].url, results[i].errorMessage)
+	for range results {
+		select {
+		case result := <-ch:
+			fmt.Printf("[%d] %s %s\n", result.status, result.url, result.errorMessage)
+		}
 	}
 }
